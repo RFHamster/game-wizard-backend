@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = 'postgres'
 
+    KAFKA_IP: str
+    KAFKA_TOPIC: str = 'ingest-documents'
+
     @computed_field
     @property
     def sqlalchemy_db_uri(self) -> PostgresDsn:

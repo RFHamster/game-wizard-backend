@@ -1,8 +1,11 @@
 import tempfile
+import json
 import os
 
+from app.core.config import settings
 from app.models.agent import Agent
 from app.utils.storage import upload_file
+from kafka import KafkaProducer
 from fastapi import UploadFile
 from sqlmodel import Session, select
 from typing import Optional, List
@@ -58,4 +61,12 @@ def create_manual(agent_name: str, file: UploadFile):
     obj_name = f'{agent_name}_manual'
     upload_file(file_name=file_path, object_name=obj_name)
 
-    ## Chamar Kafka To Ingestion
+    producer = KafkaProducer(
+        bootstrap_servers=settings.KAFKA_IP,
+        security_protocol='PLAINTEXT',
+        value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    )
+
+    producer.send(settings.KAFKA_TOPIC, {'agent_to_ingest': agent_name})
+
+    producer.close()
