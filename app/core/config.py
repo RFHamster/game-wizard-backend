@@ -24,7 +24,7 @@ class Settings(BaseSettings):
 
     POSTGRES_USER: str = 'postgres'
     POSTGRES_PASSWORD: str = 'i6#b1HDL&9'
-    POSTGRES_SERVER: str = 'localhost'
+    POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = 'postgres'
 

@@ -28,7 +28,7 @@ def search_in_qdrant(
         Lista de strings com os textos dos pontos encontrados
     """
     client = QdrantClient(url=qdrant_url)
-    model = SentenceTransformer(model_name)
+    model = SentenceTransformer(model_name, device='cpu')
     query_vector = model.encode(query_text).tolist()
 
     search_results = client.search(
@@ -46,5 +46,5 @@ def search_in_qdrant(
 
 if __name__ == '__main__':
     query = 'Test Query'
-    results = search_in_qdrant(query)
+    results = search_in_qdrant(query, collection_name='War to Dummies_collection')
     print(f'\nTotal de {len(results)} resultados encontrados.')

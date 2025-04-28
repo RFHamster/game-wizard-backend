@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlmodel import Session
 
@@ -23,6 +23,8 @@ async def chat_agent(
     llm_agent = get_db_agent()
     user_question = user_input.input
     agent = get_agent(session=session, agent_name=agent_name)
+    if not agent:
+        raise HTTPException(status_code=404)
     return {
         'status': 'ok',
         'agent': agent.agent_name,
